@@ -108,9 +108,11 @@
     <!-- Переход -->
     <section class="transition">
         <div class="container">
-            <svg xmlns="http://www.w3.org/2000/svg" width="74" height="34" viewBox="0 0 74 34" fill="none">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H74C64.6112 0 57 7.61116 57 17C57 26.3888 64.6112 34 74 34H0C9.38884 34 17 26.3888 17 17C17 7.61116 9.38884 0 0 0Z" fill="#F2F4F7"/>
-              </svg>
+            <div class="transition__svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="74" height="34" viewBox="0 0 74 34" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H74C64.6112 0 57 7.61116 57 17C57 26.3888 64.6112 34 74 34H0C9.38884 34 17 26.3888 17 17C17 7.61116 9.38884 0 0 0Z" fill="#F2F4F7"/>
+                </svg>
+            </div>
         </div>
     </section>
 
@@ -129,12 +131,14 @@
                                 <div class="price__flex">
                                     <h2 class="content__h2-free">90 AED</h2>
                                     <div class="price__btn">
-                                        <button>?</button>
-                                        <button>+</button>
+                                        <button class="btn-main-card">?</button>
+                                        <button class="btn-main-card">+</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="tipe__flex-item">
                         <div class="card">
                             <div class="card__img">
                                 <img src="img/bike_photo.png" alt="bike" class="groc">
@@ -144,12 +148,14 @@
                                 <div class="price__flex">
                                     <h2 class="content__h2-free">90 AED</h2>
                                     <div class="price__btn">
-                                        <button>?</button>
-                                        <button>+</button>
+                                        <button class="btn-main-card">?</button>
+                                        <button class="btn-main-card">+</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="tipe__flex-item">
                         <div class="card">
                             <div class="card__img">
                                 <img src="img/bike_photo.png" alt="bike" class="groc">
@@ -159,12 +165,14 @@
                                 <div class="price__flex">
                                     <h2 class="content__h2-free">90 AED</h2>
                                     <div class="price__btn">
-                                        <button>?</button>
-                                        <button>+</button>
+                                        <button class="btn-main-card">?</button>
+                                        <button class="btn-main-card">+</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="tipe__flex-item">
                         <div class="card">
                             <div class="card__img">
                                 <img src="img/bike_photo.png" alt="bike" class="groc">
@@ -174,33 +182,51 @@
                                 <div class="price__flex">
                                     <h2 class="content__h2-free">90 AED</h2>
                                     <div class="price__btn">
-                                        <button>?</button>
-                                        <button>+</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card__img">
-                                <img src="img/bike_photo.png" alt="bike" class="groc">
-                            </div>
-                            <div class="card__content">
-                                <h2 class="content__h2 card__h2">Аллюминий</h2>
-                                <div class="price__flex">
-                                    <h2 class="content__h2-free">90 AED</h2>
-                                    <div class="price__btn">
-                                        <button>?</button>
-                                        <button>+</button>
+                                        <button class="btn-main-card">?</button>
+                                        <button class="btn-main-card">+</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="tipe__btn">
+                    <button class="btn-main btn-main__tipe">Найти</button>
+                </div>
             </div>
         </div>
     </section>
-    
+    <footer>
+        <div class="container footer__container">
+            <div class="footer__contacts">
+                <div class="footer__list">
+                    <h3 class="footer__list-title">Аренда Велосипедов</h3>
+                    <ul class="footer__list-flex">
+                        <li class="footer__list-item">Алюминий</li>
+                        <li class="footer__list-item">Карбон</li>
+                        <li class="footer__list-item">Горные/городские</li>
+                        <li class="footer__list-item">Городские эконом</li>
+                    </ul>
+                </div>
+                <ul class="footer__navigation-flex">
+                    <li class="footer__navigation-item">Правила</li>
+                    <li class="footer__navigation-item">Отзывы</li>
+                    <li class="footer__navigation-item">Контакты</li>
+                    <li class="footer__navigation-item">Обратная связь</li>
+                </ul>
+                
+            </div>
+            <div class="footer__logo">
+                <h3 class="footer__logo">© BikePark, 2021</h3>
+                <h3 class="footer__logo">Политика конфиденциальности</h3>
+                <div class="footer__social">
+                    <img src="img/facebook.png" alt="" class="footer__social-item">
+                    <img src="img/instagram.png" alt="" class="footer__social-item">
+                </div>
+            </div>
+        </div>
+
+    </footer>
     
 </body>
 </html>

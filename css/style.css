@@ -29,6 +29,7 @@ html {
 .container {
     max-width: 1240px;
     margin: 0 auto;
+    padding: 0 10px;
 }
 
 /* Секция навигация */
@@ -72,7 +73,7 @@ html {
     text-align: center;
     font-size: 14px;
     text-transform: uppercase;
-}
+    }
 .clock {
     color: var(--text-color);
     text-align: right;
@@ -207,7 +208,7 @@ html {
 }
 .rent__choise-par-flex {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 }
 .rent__choise-par-item {
@@ -258,21 +259,28 @@ html {
 }
 
 /* Переход */
-.transition {
+.transition__svg {
     margin-left: 40px;
+    width: 70px;
+    height: 30px;
 }
 
 /* Выбор типа велосипеда */
 .tipe__p {
-    padding: 40px;
     margin: 0;
+    padding: 40px;
 }
 .card {
     max-width: 260px;
-    margin: 0 40px 0 40px;
+    margin-right: 40px;
+}
+.card:last-child{
+    margin-right: 0;
 }
 .tipe__flex {
-    padding-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 .groc {
     position: relative;
@@ -281,12 +289,13 @@ html {
 .price__flex {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .card__content {
     background-color: #fff;
     border-radius: 15px;
     padding: 40px 40px 20px;
-}2
+}
 .card__h2{
     margin-bottom: 20px;
 }
@@ -294,8 +303,82 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.tipe__btn {
+    display: flex;
+    justify-content: center;
+}
+.btn-main__tipe {
+    padding: 20px 90px;
+    margin: 40px auto;
+}
+.btn-main-card {
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+    border: #DDE3EB solid 2px;
+    color: var(--accent-color);
+    font-size: 18px;
+}
+footer {
+    padding: 53px 0;
+    background-color: #272934;
+    color: #F2F4F7;
+}
+.footer__contacts {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.footer__list-flex {
+    padding-left: 0;
+    list-style-type: none;
+    margin-top: 40px;
+}
+.footer__navigation-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding-left: 0;
+    list-style-type: none;
+}
+.footer__navigation-item, .footer__list-title {
+    color: #FFF;
+    font-family: "Montserrat-semibold";
+    font-size: 18px;
+}
+.footer__navigation-item {
+    margin-right: 46px;
+}
+.footer__navigation-item:last-child {
     margin-right: 0;
 }
-.tipe__flex-item:last-child {
-    margin-right: 0;   
+.footer__list-item {
+    font-family: "Montserrat-Medium";
+    margin-bottom: 10px;
+    color: #F2F4F7;
+    font-size: 16px;
+    line-height: 150%; /* 24px */
+}
+.footer__list-item:last-child {
+    margin-bottom: 0;
+}
+.footer__logo {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #F2F4F7;
+    font-family: "Montserrat-Medium";
+    font-size: 18px;
+}
+.footer__social-item {
+    margin-right: 30px;
+}
+.footer__social-item:last-child {
+    margin-right: 0;
+}
+.footer__container {
+    padding: 40px;
 }
