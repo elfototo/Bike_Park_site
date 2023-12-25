@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <title>BikePark</title>
 </head>
 <body>
 
@@ -13,22 +14,29 @@
     <section class="navigation">
         <div class="container">
             <div class="navigation__flex">
-                <img src="img/logo.png" alt="логотип" srcset="" class="logo">
+                <a href="index.html"><img src="img/logo.png" alt="логотип" srcset="" class="logo"></a>
                 <ul class="navigation__list">
-                    <li><a href="#" class="navigation__list-title">О нас</a></li>
-                    <li><a href="#" class="navigation__list-title">Аренда</a></li>
-                    <li><a href="#" class="navigation__list-title">Доставка</a></li>
-                    <li><a href="#" class="navigation__list-title">Где кататься</a></li>
-                    <li><a href="#" class="navigation__list-title">Контакты</a></li>
+                    <li><a href="About_us.html" class="navigation__list-title">О нас</a></li>
+                    <li><a href="Rent.html" class="navigation__list-title">Аренда</a></li>
+                    <li><a href="delivery.html" class="navigation__list-title">Доставка</a></li>
+                    <li><a href="locations.html" class="navigation__list-title">Где кататься</a></li>
+                    <li><a href="contacts.html" class="navigation__list-title">Контакты</a></li>
                 </ul>
                 <a href="tel:+971 52 563 4064" class="navigation__phone">+971 52 563 4064</a>
-                <div class="profile"><img src="img/Icon_client's-profile.png" alt="" srcset=""></div>
+                <a href="#" class="profile"><img src="img/Icon_client's-profile.png" alt="" srcset=""></a>
                 <button class="btn-main">feedback</button>
                 <div class="clock">
-                    <div class="time">2:50 PM</div>
-                    <div class="time-location">Time in Russia</div>
+                    <div class="time" id="time"></div>
+                    <div class="time-location">Time in your country</div>
                 </div>
-                <div class="navigation__language">RU</div>
+                <form>
+                    <div class="select__wrapper">
+                        <select class="selectLang" name="city" id="city-select">
+                            <option class="selectLang-item" value="ru">RU</option>
+                            <option class="selectLang-item" value="en">EN</option>
+                        </select>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
@@ -38,7 +46,7 @@
         <div class="container">
             <div class="accent__backg">
                 <div class="rent__choise-header">
-                    <h1 class="header__titile">Аренда велосипедов<br>с доставкой</h1>
+                    <h1 class="header__titile">Аренда велосипедов с доставкой</h1>
                     <div class="header__img">
                         <div class="free__helmet">
                             <div class="header__img-item">
@@ -77,7 +85,7 @@
                             <div class="rent__choise-par-input">
                                 <!-- Выбор по дням -->
                                 <label class="radio-label">
-                                    <input type="radio" name="choice" id="days" value="days">
+                                    <input type="radio" name="choice" id="days" value="days" checked>
                                     <span>По дням</span>
                                 </label>
                                 <!-- Выбор по часам -->
@@ -89,11 +97,37 @@
                         </div>
                         <div class="rent__choise-par-item">
                             <p class="content__p ">Дата и время начала</p>
-                            <div class="rent__choise-par-input"></div>
+                            <div class="choice__calendar">
+                                <!-- Календарь -->
+                                <div class="custom-button" onclick="openCalendar()">
+                                    <span id="currentDate"></span>
+                                    <span class="arrow-down"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                                </div>
+                            </div>        
+                        </div>
+                        <!-- Затемненный фон -->
+                        <div class="overlay" id="overlay"></div>
+                        <!-- Модальное окно с календарем -->
+                        <div id="calendarModal" class="modal">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="modal-header-text">
+                                        <div class="modal__title">Свободные даты<br> для бронирования</div>
+                                        <div class="modal__text">Городской велосипед Schwinn Traveler 20”</div>
+                                    </div>
+                                    <div class="btn__close" onclick="closeCalendar()">&#10006;</div>
+                                </div>
+                                <div class="calendars-container">
+                                    <table id="calendar1" class="calendar"></table> <!-- Первый календарь -->
+                                    <table id="calendar2" class="calendar"></table> <!-- Второй календарь -->
+                                </div>
+                                <button class="btn-main">Применить</button>
+                            </div>
                         </div>
                         <div class="rent__choise-par-item">
                             <p class="content__p ">Дата и время конца</p>
-                            <div class="rent__choise-par-input"></div>
+                            <div class="rent__choise-par-input">
+                            </div>
                         </div>
                         <div class="rent__choise-par-item">
                             <p class="content__p ">Доставка</p>
@@ -116,6 +150,7 @@
         </div>
     </section>
 
+    <!-- Тип велосипеда -->
     <section class="tipe">
         <div class="container">
             <div class="accent__backg">
@@ -227,6 +262,167 @@
         </div>
 
     </footer>
+
+    <script>
+        // Часы
+        function formatTime(hours, minutes) {
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = (hours % 12) || 12;
+            return hours + ':' + (minutes < 10 ? '0' : '') + minutes + ' ' + ampm;
+        }
+
+        const getCurrentTime = () => {
+            const now = new Date();
+            const formattedTime = formatTime(now.getHours(), now.getMinutes());
+
+            document.getElementById('time').innerText = formattedTime;
+        }
+
+        getCurrentTime();
+        setInterval(getCurrentTime, 60000);
+
+        // JavaScript для текущей даты
+        document.getElementById('currentDate').innerText = new Date().toLocaleDateString();
+
+        // Функция для открытия календаря
+        function openCalendar() {
+            document.getElementById('calendarModal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+            createCalendar(); // Создать календарь
+        }
+        // Функция для закрытия календаря
+        function closeCalendar() {
+            document.getElementById('calendarModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active'); // Скрыть затемненный фон
+        }
+
+
+        // Функция для создания календаря
+        function createCalendar() {
+            const calendar1 = document.getElementById('calendar1');
+            const calendar2 = document.getElementById('calendar2');
+            const calendar = document.getElementById('calendar');
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            let nextMonth = currentMonth + 1;
+            let nextYear = currentYear;
+
+            if (nextMonth > 11) {
+                nextMonth = 0;
+                nextYear++;
+            }
+
+            const nextMonthDays = new Date(nextYear, nextMonth + 1, 0).getDate();
+            const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+
+             
+    
+            let calendarHTML = `
+                <tr>
+                    <th colspan="7">${monthNames[currentMonth]}</th>
+                </tr>
+                <tr>
+                    ${daysOfWeek.map(day => `<th>${day}</th>`).join('')}
+                </tr>
+                <tr>
+            `;
+
+            let nextMonthHTML = `
+                <tr>
+                    <th colspan="7">${monthNames[nextMonth]}</th>
+                </tr>
+                <tr>
+                    ${daysOfWeek.map(day => `<th>${day}</th>`).join('')}
+                </tr>
+                <tr>
+            `;
+            let currentDay = 1;
+            let nextMonthDay = 1;
+
+            for (let i = 0; i < 6; i++) {
+                for (let j = 0; j < 7; j++) {
+                  const date = new Date(currentYear, currentMonth, currentDay);
+                  const nextMonthDate = new Date(currentYear, currentMonth + 1, nextMonthDay);
+
+                  let cellStyle = '';
+                  let nextMonthCellStyle = '';
+
+                  if (date < today) {
+                    cellStyle = 'color: #CCCCCC;'; // Серый цвет для прошедших дат текущего месяца
+                  }
+
+                  if (nextMonthDate < today) {
+                    nextMonthCellStyle = 'color: #CCCCCC;'; // Серый цвет для прошедших дат следующего месяца
+                  }
+
+                  // Добавление дней текущего месяца
+                  calendarHTML += `<td style="${cellStyle}" onclick="selectDate('${date.toISOString().split('T')[0]}')">${currentDay <=  daysInMonth ? currentDay : ''}</td>`;
+
+                  // Добавление дней следующего месяца
+                  nextMonthHTML += `<td style="${nextMonthCellStyle}" onclick="selectDate('${nextMonthDate.toISOString().split('T')[0]}')">${nextMonthDay <= nextMonthDays ? nextMonthDay : ''}</td>`;
+
+                  currentDay++;
+                  nextMonthDay++;
+                }
+
+                calendarHTML += '</tr>';
+                nextMonthHTML += '</tr>';
+            }
+
+            // Первый календарь
+            calendar1.innerHTML = calendarHTML;
+
+            // Второй календарь
+            calendar2.innerHTML = nextMonthHTML;
+        }
+
+        // Функция для выбора даты
+        let selectedDates = []; // массив для хранения выбранных дат
+
+function selectDate(selectedDate, calendarId) {
+    const dateElem = document.querySelector(`#${calendarId} [data-date="${selectedDate}"]`);
+
+    if (!dateElem) {
+        return;
+    }
+
+    const date = new Date(selectedDate);
+
+    if (selectedDates.length < 2) {
+        selectedDates.push(date);
+        dateElem.classList.add('selected');
+    } else {
+        const selectedDate1 = selectedDates[0];
+        const selectedDate2 = selectedDates[1];
+
+        if (date >= selectedDate1 && date <= selectedDate2) {
+            return;
+        }
+
+        selectedDates = [date];
+        const allDates = document.querySelectorAll(`#${calendarId} .calendar__day`);
+        allDates.forEach(day => day.classList.remove('selected'));
+        dateElem.classList.add('selected');
+    }
+
+    if (selectedDates.length === 2) {
+        const [start, end] = selectedDates;
+        const allDates = document.querySelectorAll(`#${calendarId} .calendar__day`);
+
+        allDates.forEach(day => {
+            const dayDate = new Date(day.getAttribute('data-date'));
+            if (dayDate > start && dayDate < end) {
+                day.classList.add('between');
+            }
+        });
+    }
+}
+
+
+    </script>
     
 </body>
 </html>
