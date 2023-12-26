@@ -112,9 +112,21 @@ i.fa {
     font-size: inherit;
 }
   /* Стили для календаря */
-#calendar {
+.calendars-container {
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 20px;
+    max-width: auto;
+}
+.calendar {
     display: flex;
     flex-wrap: wrap;
+    margin-right: 40px;
+}
+.calendar:last-child {
+    margin-right: 0;
 }
 #calendarModal {
     position: absolute;
@@ -122,28 +134,29 @@ i.fa {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-#calendar td {
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    border: 1px #ccc;
-    cursor: pointer;
-}
+.calendar .monthNames {
+    font-size: 16px;
 
-#calendar td:hover {
-    background-color: var(--accent-color);
-    border-radius: 20px;
-    color: #fff;
 }
-.calendars-container {
-    display: flex;
-    justify-content: space-around;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    padding: 20px;
-    max-width: 500px;
+.calendar .daysOfWeek {
+    font-family: "Montserrat-Bold";
+    font-size: 10px;
+    text-transform: uppercase;
 }
-.overlay {
+.calendar th {
+    padding-bottom: 10px;
+    color: #77757F;
+    font-family: "Montserrat-Medium";
+    text-align: left;
+    padding-left: 10px;
+}
+.calendar td {
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+}
+#overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -155,7 +168,7 @@ i.fa {
     transition: opacity 0.3s ease-in-out;
 }
 /* Отображение затемненного фона при отображении модального окна */
-.overlay.active {
+#overlay.active {
     display: block;
     opacity: 1;
 }

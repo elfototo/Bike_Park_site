@@ -121,7 +121,7 @@
                                     <table id="calendar1" class="calendar"></table> <!-- Первый календарь -->
                                     <table id="calendar2" class="calendar"></table> <!-- Второй календарь -->
                                 </div>
-                                <button class="btn-main">Применить</button>
+                                <button class="btn-main" onclick="applyDate()">Применить</button>
                             </div>
                         </div>
                         <div class="rent__choise-par-item">
@@ -301,7 +301,6 @@
         function createCalendar() {
             const calendar1 = document.getElementById('calendar1');
             const calendar2 = document.getElementById('calendar2');
-            const calendar = document.getElementById('calendar');
             const today = new Date();
             const currentMonth = today.getMonth();
             const currentYear = today.getFullYear();
@@ -316,110 +315,133 @@
 
             const nextMonthDays = new Date(nextYear, nextMonth + 1, 0).getDate();
             const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-            const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+            const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',        'Декабрь'];
 
-             
+            let calendarHTML1 = '';
+            let calendarHTML2 = '';
+
+            // Создание первого календаря
+            calendarHTML1 += createCalendarHTML(currentYear, currentMonth, daysInMonth, daysOfWeek, monthNames);
+
+            // Создание второго календаря
+            calendarHTML2 += createCalendarHTML(nextYear, nextMonth, nextMonthDays, daysOfWeek, monthNames);
+
+            calendar1.innerHTML = calendarHTML1;
+            calendar2.innerHTML = calendarHTML2;
+        }
+
+        function createCalendarHTML(year, month, totalDays, daysOfWeek, monthNames) {
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth();
     
+            const firstDayOfWeek = new Date(year, month, 1).getDay();
+            const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+
+            let dayIndex = 0;
+
             let calendarHTML = `
-                <tr>
-                    <th colspan="7">${monthNames[currentMonth]}</th>
+                <tr class="monthNames">
+                    <th colspan="7">${monthNames[month]}</th>
                 </tr>
-                <tr>
+                <tr class="daysOfWeek">
                     ${daysOfWeek.map(day => `<th>${day}</th>`).join('')}
                 </tr>
                 <tr>
             `;
 
-            let nextMonthHTML = `
-                <tr>
-                    <th colspan="7">${monthNames[nextMonth]}</th>
-                </tr>
-                <tr>
-                    ${daysOfWeek.map(day => `<th>${day}</th>`).join('')}
-                </tr>
-                <tr>
-            `;
-            let currentDay = 1;
-            let nextMonthDay = 1;
-
-            for (let i = 0; i < 6; i++) {
-                for (let j = 0; j < 7; j++) {
-                  const date = new Date(currentYear, currentMonth, currentDay);
-                  const nextMonthDate = new Date(currentYear, currentMonth + 1, nextMonthDay);
-
-                  let cellStyle = '';
-                  let nextMonthCellStyle = '';
-
-                  if (date < today) {
-                    cellStyle = 'color: #CCCCCC;'; // Серый цвет для прошедших дат текущего месяца
-                  }
-
-                  if (nextMonthDate < today) {
-                    nextMonthCellStyle = 'color: #CCCCCC;'; // Серый цвет для прошедших дат следующего месяца
-                  }
-
-                  // Добавление дней текущего месяца
-                  calendarHTML += `<td style="${cellStyle}" onclick="selectDate('${date.toISOString().split('T')[0]}')">${currentDay <=  daysInMonth ? currentDay : ''}</td>`;
-
-                  // Добавление дней следующего месяца
-                  nextMonthHTML += `<td style="${nextMonthCellStyle}" onclick="selectDate('${nextMonthDate.toISOString().split('T')[0]}')">${nextMonthDay <= nextMonthDays ? nextMonthDay : ''}</td>`;
-
-                  currentDay++;
-                  nextMonthDay++;
+                // Формируем календарь
+                for (let i = 0; i < 6; i++) {
+                    calendarHTML += '<tr>';
+                    for (let j = 0; j < 7; j++) {
+                        if (i === 0 && j < firstDayOfWeek) {
+                            calendarHTML += '<td></td>';
+                        } else {
+                            dayIndex++;
+                            if (dayIndex <= lastDayOfMonth) {
+                                const date = new Date(year, month, dayIndex);
+                                const dateString = date.toISOString().split('T')[0];
+                                const cellStyle = date < today ? 'color: #CCCCCC;' : '';
+                                calendarHTML += `<td class="calendar__day" data-date="${dateString}" style="${cellStyle}" onclick="selectDate('${dateString}', this)">${dayIndex}</td>`;
+                            } else {
+                                calendarHTML += '<td></td>';
+                            }
+                        }
+                    }
+                    calendarHTML += '</tr>';
                 }
 
-                calendarHTML += '</tr>';
-                nextMonthHTML += '</tr>';
+                return calendarHTML; // Возвращаем сформированный HTML для календаря
+                console.log(today)
             }
 
-            // Первый календарь
-            calendar1.innerHTML = calendarHTML;
-
-            // Второй календарь
-            calendar2.innerHTML = nextMonthHTML;
-        }
-
+            let selectedDates = []; // Массив для хранения выбранных дат
+            let today = new Date(); // текущая дата
+            
         // Функция для выбора даты
-        let selectedDates = []; // массив для хранения выбранных дат
+        function selectDate(selectedDate, cell) {
+            
+            const date = new Date(selectedDate);
 
-function selectDate(selectedDate, calendarId) {
-    const dateElem = document.querySelector(`#${calendarId} [data-date="${selectedDate}"]`);
+            if (date <= today) {
+                return; // Если выбранная дата меньше или равна текущей дате, прерываем функцию
+            }
 
-    if (!dateElem) {
-        return;
-    }
+            if (selectedDates.length < 2) {
+                selectedDates.push(date); // Добавляем выбранную дату в массив выбранных дат
+                cell.classList.add('selected'); // Добавляем класс для выделения ячейки
+            } else {
+                const [start, end] = selectedDates; // Получаем начальную и конечную выбранные даты
+                const allDates = document.querySelectorAll('.calendar__day'); // Получаем все ячейки календаря
 
-    const date = new Date(selectedDate);
+                allDates.forEach(day => {
+                    day.classList.remove('selected', 'between'); // Удаляем классы выделения и между датами
+                    const dayDate = new Date(day.getAttribute('data-date')); // Получаем дату из ячейки
+                    if (dayDate <= today) {
+                        day.classList.add('disabled'); // Добавляем класс для отключения старых дат
+                    }
+                });
 
-    if (selectedDates.length < 2) {
-        selectedDates.push(date);
-        dateElem.classList.add('selected');
-    } else {
-        const selectedDate1 = selectedDates[0];
-        const selectedDate2 = selectedDates[1];
+                selectedDates = [date]; // Заменяем выбранные даты на новую выбранную
+                cell.classList.add('selected'); // Добавляем класс для выделения ячейки
+            }
 
-        if (date >= selectedDate1 && date <= selectedDate2) {
-            return;
+            if (selectedDates.length === 2) {
+                const [start, end] = selectedDates; // Получаем начальную и конечную выбранные даты
+                const allDates = document.querySelectorAll('.calendar__day'); // Получаем все ячейки календаря
+
+                allDates.forEach(day => {
+                    const dayDate = new Date(day.getAttribute('data-date'));
+                    if (dayDate > start && dayDate < end && dayDate < end && dayDate > start) {
+                        day.classList.add('between'); // Добавляем класс для ячеек между выбранными датами
+                    }
+                });
+            }
+
+            console.log('Selected date:', selectedDate);
         }
 
-        selectedDates = [date];
-        const allDates = document.querySelectorAll(`#${calendarId} .calendar__day`);
-        allDates.forEach(day => day.classList.remove('selected'));
-        dateElem.classList.add('selected');
-    }
-
-    if (selectedDates.length === 2) {
-        const [start, end] = selectedDates;
-        const allDates = document.querySelectorAll(`#${calendarId} .calendar__day`);
-
-        allDates.forEach(day => {
-            const dayDate = new Date(day.getAttribute('data-date'));
-            if (dayDate > start && dayDate < end) {
-                day.classList.add('between');
+        // Функция добавления дат в localStorage
+        function applyDate() {
+            // Применить выбранные даты
+            if (selectedDates.length === 2) {
+                localStorage.setItem('startDate', selectedDates[0].toISOString().split('Т')[0])
+                localStorage.setItem('endDate', selectedDates[1].toISOString().split('Т')[0])
             }
-        });
-    }
-}
+        }
+
+        // Функция изменения месяца на календаре
+        function changeMonth (offset, calendarId) {
+            const calendar = document.getElementById(calendarId);
+            const currentYear = parseInt(calendar.getAttribute('data-year'));
+            const currentMonth = parseInt(calendar.getAttribute('data-month'));
+            const newDate = new Date(currentYear, currentMonth + offset, 1);
+
+            calendar.setAttribute('data-year', newDate.getFullYear());
+            calendar.setAttribute('data-month', newDate.getMonth());
+
+            createCalendar();
+        }
 
 
     </script>
